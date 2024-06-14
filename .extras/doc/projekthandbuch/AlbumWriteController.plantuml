@@ -1,0 +1,105 @@
+@startuml Controller-Klasse
+
+interface Promise<T>
+
+package @nestjs/common {
+  class "@Controller" as Controller
+  hide Controller circle
+
+  class "@UseGuards" as UseGuards
+  hide UseGuards circle
+
+  class "@UseInterceptors" as UseInterceptors
+  hide UseInterceptors circle
+
+  class "@Post" as Post
+  hide Post circle
+
+  class "@Put" as Put
+  hide Put circle
+
+  class "@Delete" as Delete
+  hide Delete circle
+
+  class "@Req" as Req
+  hide Req circle
+
+  class "@Res" as Res
+  hide Res circle
+
+  class "@Param" as Param
+  hide Param circle
+
+  class "@Body" as Body
+  hide Body circle
+
+  class "@Headers" as Headers
+  hide Headers circle
+
+  UseInterceptors .[hidden].> Post
+  UseInterceptors .[hidden].> Put
+  UseInterceptors .[hidden].> Delete
+
+  Post .[hidden].> Req
+  Post .[hidden].> Res
+  Post .[hidden].> Param
+  Post .[hidden].> Body
+  Post .[hidden].> Headers
+}
+
+package nest-keycloak-connect {
+  class AuthGuard
+
+  class "@Roles" as Roles
+  hide Roles circle
+}
+
+package express {
+  class Request
+  class Response
+
+  Response .right[hidden].> Controller
+}
+
+package album {
+  package entity #FFFFFF {
+    class Album <<entity>>
+
+    Album .[hidden].> Promise
+    Album .[hidden].> Request
+  }
+
+  package service {
+    class AlbumWriteService << control >>
+    class AlbumReadService << control >>
+  }
+
+  package rest #DDDDDD {
+    class AlbumWriteController << control >> << @Controller() >> << @UseGuards() >> << @UseInterceptors() >> {
+      + @Post() @Roles() async post(@Body() album: Album, @Req() req: Request,  @Res() res: Response): Promise<Response>
+      + @Put() @Roles() async put(@Body() album: Album, @Param() id: number, @Headers() version: string, @Res() res: Response): Promise<Response>
+      + @Delete() @Roles() async delete(@Param() id: number, @Res() res: Response): Promise<Response>
+    }
+
+    AlbumWriteController o--> "1" AlbumWriteService : service
+    AlbumWriteController o--> "1" AlbumReadService : readService
+    AlbumWriteController ..up> Album
+
+    AlbumWriteController ..> Controller
+
+    AlbumWriteController .up.> AuthGuard
+    AlbumWriteController .up.> Roles
+
+    AlbumWriteController ..> Request
+    AlbumWriteController ..> Response
+    AlbumWriteController ..> Promise
+
+    Album .up[hidden].> Roles
+    AlbumWriteService .[hidden].> Request
+    AlbumWriteService .[hidden].> Promise
+  }
+}
+
+hide empty members
+
+@enduml

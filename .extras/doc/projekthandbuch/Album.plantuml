@@ -1,0 +1,65 @@
+@startuml Entity
+
+package typeorm {
+  class "@Entity" as Entity
+  hide Entity circle
+  class "@Column" as Column
+  hide Column circle
+  class "@PrimaryColumn" as PrimaryColumn
+  hide PrimaryColumn circle
+  class "@OneToMany" as OneToMany
+  hide OneToMany circle
+  class "@JoinColumn" as JoinColumn
+  hide JoinColumn circle
+  class "@ManyToOne" as ManyToOne
+  hide ManyToOne circle
+  class "@CreateDateColumn" as CreateDateColumn
+  hide CreateDateColumn circle
+  class "@UpdateDateColumn" as UpdateDateColumn
+  hide UpdateDateColumn circle
+}
+
+package album.entity {
+  class "type AlbumArt = 'STUDIOALBUM' | 'LIVEALBUM'" as AlbumArt
+  hide AlbumArt circle
+
+  class Album <<entity>> <<@Entity>> {
+    @Column() @PrimaryColumn() readonly id: number
+    @Column() readonly version: number
+    @Column() readonly ean: string
+    @Column() readonly rating: number
+    @Column() readonly art: AlbumArt
+    @Column() readonly titel: string
+    @Column() readonly preis: number
+    @Column() readonly rabatt: number
+    @Column() readonly lieferbar: boolean
+    @Column() readonly erscheinungsdatum: Date
+    @Column() readonly homepage?: string
+    @Column() readonly genres?: string
+    @CreateDateColumn() readonly erzeugt: Date
+    @UpdateDateColumn() readonly aktualisiert: Date
+  }
+
+  class Interpret <<entity>> <<@Entity>> {
+    @Column() @PrimaryColumn() readonly id: number
+    @Column() readonly interpret: string
+    @Column() readonly geburtsdatum: string
+  }
+
+  class Song <<entity>> <<@Entity>> {
+    @Column() @PrimaryColumn() readonly id: number
+    @Column() readonly songtitel: string
+    @Column() readonly dauer: string
+    @Column() readonly feature?: string
+  }
+
+  Album *--> "1" Interpret : @OneToOne() \ninterpret
+  Album *--> "*" Song : @OneToMany() \nsongs
+
+  Album .right.> Entity
+  Album .right.> AlbumArt
+}
+
+hide empty members
+
+@enduml

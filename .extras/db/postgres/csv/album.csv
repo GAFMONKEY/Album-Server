@@ -1,0 +1,7 @@
+id;version;ean;rating;art;titel;preis;rabatt;lieferbar;erscheinungsdatum;homepage;genres;erzeugt;aktualisiert
+1;0;5901234123457;5;STUDIOALBUM;Good Kid, M.A.A.D City;14.99;0.02;true;"2012-02-01";https://kendricklamar.com;POP;01.02.2022 00:00;01.02.2022 00:00
+20;0;5801234123457;4;STUDIOALBUM;When We All Fall Asleep, Where Do We Go?;12.99;0.01;true;"2019-03-29";https://billieeilish.com;POP,ALTERNATIVE;02.02.2022 00:00;02.02.2022 00:00
+30;0;5701234123457;3;STUDIOALBUM;Hollywood's Bleeding;11.99;0.03;true;"2019-09-06";https://postmalone.com;ALTERNATIVE,POP;03.02.2022 00:00;03.02.2022 00:00
+40;0;5601234123457;4;STUDIOALBUM;Astroworld;17.99;0.05;true;"2018-08-03";https://travisscott.com;POP;04.02.2022 00:00;04.02.2022 00:00
+50;0;5501234123457;2;STUDIOALBUM;Cuz I Love You;10.99;0.02;true;"2019-04-19";https://lizzomusic.com;POP,ALTERNATIVE;05.02.2022 00:00;05.02.2022 00:00
+60;0;5401234123457;1;LIVEALBUM;After Hours;13.99;0.04;true;"2020-03-20";https://theweeknd.com;ALTERNATIVE;06.02.2022 00:00;06.02.2022 00:00

@@ -1,0 +1,138 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"Funktionen, um Albendaten zu lesen"
+type Query {
+  alben(suchkriterien: SuchkriterienInput): [Album!]
+
+  album(id: ID!): Album
+}
+
+"Funktionen, um Alben neu anzulegen, zu aktualisieren oder zu löschen"
+type Mutation {
+  create(input: AlbumInput!): CreatePayload
+
+  update(input: AlbumUpdateInput!): UpdatePayload
+
+  delete(id: ID!): Boolean
+
+  # Mutation, wenn z.B. der Login-Zeitpunkt im IDM-System gespeichert wird
+  login(username: String!, password: String!): LoginResult
+  refresh(refresh_token: String!): LoginResult
+}
+
+"Daten zum Interpret eines Buches"
+type Interpret {
+  interpret: String!
+  geburtsdatum: String
+  album: Int
+}
+
+"Daten zum Song eines Albums"
+type Song {
+  songtitel: String!
+  dauer: String
+  feature: String
+  album: Int
+}
+
+"Datenschema zu einem Album, das gelesen wird"
+type Album {
+  # ID ist bei Apollo ein String
+  id: Int!
+  version: Int!
+  ean: String!
+  rating: Int
+  art: Art
+  preis: Float!
+  lieferbar: Boolean
+  erscheinungsdatum: String
+  homepage: String
+  genres: [String]
+  titel: String
+  # 1:1-Beziehung
+  interpret: Interpret!
+  # field mit @ResolveField
+  rabatt(short: Boolean): String!
+}
+
+"Enum-Typ für die Art eines Albums"
+enum Art {
+  STUDIOALBUM
+  LIVEALBUM
+}
+
+"Suchkriterien für Alben"
+input SuchkriterienInput {
+  titel: String
+  ean: String
+  interpret: String
+  rating: Int
+  art: Art
+  lieferbar: Boolean
+}
+
+"Daten zum Interpret eines neuen Albums"
+input InterpretInput {
+  interpret: String!
+  geburtsdatum: String
+  album: Int
+}
+
+"Daten zu den Songs eines Albums"
+input SongInput {
+  songtitel: String!
+  dauer: String
+  feature: String
+  album: Int
+}
+
+"Daten für ein neues Album"
+input AlbumInput {
+  ean: String
+  rating: Int
+  art: Art
+  preis: Float
+  rabatt: Float
+  lieferbar: Boolean
+  erscheinungsdatum: String
+  homepage: String
+  genres: [String]
+  titel: String
+  interpret: InterpretInput!
+  songs: [SongInput!]
+}
+
+type CreatePayload {
+  id: Int
+}
+
+"Daten für ein zu änderndes Album"
+input AlbumUpdateInput {
+  id: ID
+  version: Int
+  ean: String
+  rating: Int
+  art: Art
+  preis: Float
+  rabatt: Float
+  lieferbar: Boolean
+  erscheinungsdatum: String
+  homepage: String
+  genres: [String]
+  titel: String
+}
+
+type UpdatePayload {
+  version: Int
+}
+
+type LoginResult {
+  access_token: String!
+  expires_in: Int!
+  refresh_token: String!
+  refresh_expires_in: Int!
+  roles: [String!]
+}

@@ -1,0 +1,38 @@
+name: CI for the first SWE Project.
+on: [ push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize
+        run: echo "The job was automatically triggered by a ${{ github.event_name }} event." |
+          echo "OS ${{ runner.os }}" |
+          echo "Branch ${{ github.ref }}, repository ${{ github.repository }}."
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21"
+
+      - name: Install dependencies
+        run: |
+          npm i
+
+      - name: Checking errors with ESLint
+        run: |
+          npm run eslint
+
+      - name: Running Prettier
+        run: |
+          npm run prettier -- --check
+
+      - name: Building Asciidoctor documentation
+        run: |
+          npm run asciidoctor
+
+      - name: Build
+        run: |
+          npm run build

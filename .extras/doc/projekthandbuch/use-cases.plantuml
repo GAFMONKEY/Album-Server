@@ -1,0 +1,18 @@
+@startuml Use Cases
+
+actor Gast
+actor Admin
+actor Kunde
+
+rectangle album {
+    Gast --> (Album suchen)
+    Admin --> (Album suchen)
+    Admin --> (Album anlegen)
+    Admin --> (Album ändern)
+    Admin --> (Album löschen)
+    Kunde --> (Album suchen)
+    Kunde --> (Album anlegen)
+    Kunde --> (Album ändern)
+}
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml Komponenten
+
+left to right direction
+
+actor RESTClient
+actor GraphQLClient
+
+node "Nest" {
+  [RequestLoggerMiddleware]
+
+  [AlbumController]
+  [AlbumResolver]
+
+  [AlbumService]
+
+  [Repository<Album>]
+}
+
+
+cloud {
+    [TypeORM]
+}
+
+cloud {
+    [nest-keycloak-connect]
+}
+
+database "DB album" {
+    [Tabelle album]
+    [Tabelle interpret]
+    [Tabelle song]
+}
+
+node {
+    [Keycloak]
+}
+
+
+RESTClient ~~> [RequestLoggerMiddleware]
+GraphQLClient ~~> [RequestLoggerMiddleware]
+
+[RequestLoggerMiddleware] ~~> [AlbumController]
+[RequestLoggerMiddleware] ~~> [AlbumResolver]
+
+[AlbumController] ..> [AlbumService]
+[AlbumResolver] ..> [AlbumService]
+[AlbumService] ..> [Repository<Album>]
+
+[Repository<Album>] ~~> [TypeORM]
+[TypeORM] ~~> [Tabelle album]
+[TypeORM] ~~> [Tabelle interpret]
+[TypeORM] ~~> [Tabelle song]
+
+[AlbumController] ..> [nest-keycloak-connect]
+[nest-keycloak-connect] ~~> [Keycloak]
+
+@enduml

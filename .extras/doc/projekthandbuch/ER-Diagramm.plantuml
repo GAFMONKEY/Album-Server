@@ -1,0 +1,45 @@
+@startuml ER Diagramm
+
+hide circle
+
+skinparam linetype ortho
+
+entity "Album" {
+  * id: integer <<generated>>
+  --
+  * version: integer
+  * ean: text
+  * rating: number
+  * art: text
+  * preis: number
+  * rabatt: number
+  * titel: text
+  * lieferbar: boolean
+    erscheinungsdatum: date
+    homepage: text
+  * **interpret_id**: integer <<FK>>
+    genres: text
+  * erzeugt: timestamp
+  * aktualisiert: timestamp
+}
+
+entity "Interpret" {
+  * id: integer <<generated>>
+  --
+  * interpret: text
+    geburtsdatum: date
+}
+
+entity "Song" {
+  * id: integer <<generated>>
+  --
+  * songtitel: text
+    dauer: text
+    feature: text
+  * **album_id**: integer <<FK>>
+}
+
+Album ||..|| Interpret
+Album ||..o{ Song
+
+@enduml
